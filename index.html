@@ -75,7 +75,7 @@
     <div id="container">
       <canvas id="pongCanvas" width="800" height="800"></canvas>
       <div id="score"></div>
-      <input id="speed" type="number" value="10" />
+      <input id="speed" type="number" value="10" min="0" max="1000000"/>
       <p id="made"> source on
         <a href="https://github.com/gray0072/pong-wars">github</a>
       </p>
@@ -156,7 +156,7 @@
       }
     }
 
-    function updateSquareAndBounce(x, y, dx, dy, color) {
+    function updateSquareAndBounce(x, y, dx, dy, color, canPaint) {
       let updatedDx = dx;
       let updatedDy = dy;
 
@@ -170,7 +170,9 @@
 
         if (i >= 0 && i < numSquaresX && j >= 0 && j < numSquaresY) {
           if (squares[i][j] !== color) {
-            squares[i][j] = color;
+            if(canPaint){              
+              squares[i][j] = color;
+            }
 
             // Determine bounce direction based on the angle
             if (Math.abs(Math.cos(angle)) > Math.abs(Math.sin(angle))) {
@@ -216,14 +218,18 @@
     }
 
     function calcNextPosition(x, y, dx, dy) {
-      let bounce1 = updateSquareAndBounce(x1, y1, dx1, dy1, DAY_COLOR);
+
+      // Avoid conflicts, do not paint square if point are too close
+      let canPaint = (Math.abs(x2 - x1) > 2 * SQUARE_SIZE) || (Math.abs(y2 - y1) > 2 * SQUARE_SIZE);
+      
+      let bounce1 = updateSquareAndBounce(x1, y1, dx1, dy1, DAY_COLOR, canPaint);
       dx1 = bounce1.dx;
       dy1 = bounce1.dy;
-
-      let bounce2 = updateSquareAndBounce(x2, y2, dx2, dy2, NIGHT_COLOR);
+       
+      let bounce2 = updateSquareAndBounce(x2, y2, dx2, dy2, NIGHT_COLOR, canPaint);
       dx2 = bounce2.dx;
       dy2 = bounce2.dy;
-
+        
       let boundary1 = checkBoundaryCollision(x1, y1, dx1, dy1);
       dx1 = boundary1.dx;
       dy1 = boundary1.dy;
