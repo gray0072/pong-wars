@@ -208,16 +208,11 @@
       return { dx: dx, dy: dy };
     }
 
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawSquares();
-
-      drawBall(x1, y1, DAY_BALL_COLOR);
+    function calcNextPosition(x, y, dx, dy) {
       let bounce1 = updateSquareAndBounce(x1, y1, dx1, dy1, DAY_COLOR);
       dx1 = bounce1.dx;
       dy1 = bounce1.dy;
 
-      drawBall(x2, y2, NIGHT_BALL_COLOR);
       let bounce2 = updateSquareAndBounce(x2, y2, dx2, dy2, NIGHT_COLOR);
       dx2 = bounce2.dx;
       dy2 = bounce2.dy;
@@ -236,7 +231,18 @@
       y2 += dy2;
 
       iteration++;
-      if (iteration % 1_000 === 0) console.log("iteration", iteration);
+      if (iteration % 1_000 === 0) console.log("iteration", iteration);      
+    }
+      
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawSquares();
+
+      drawBall(x1, y1, DAY_BALL_COLOR);
+      drawBall(x2, y2, NIGHT_BALL_COLOR);
+
+      let speed = 100;
+      [...Array(speed)].map(() => calcNextPosition())
 
       updateScoreElement();
 
