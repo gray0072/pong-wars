@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Pong wars | Koen van Gilst</title>
+    <title>Pong wars</title>
     <meta
       name="description"
       content="The eternal battle between day and night, good and bad. Written in JavaScript with some HTML & CSS in one index.html. Feel free to reuse the code and create your own version."
@@ -52,6 +52,10 @@
         color: #172b36;
       }
 
+      #speed {
+        width: 200px;
+      }
+
       #made {
         text-align: center;
         line-height: 1.5;
@@ -71,9 +75,9 @@
     <div id="container">
       <canvas id="pongCanvas" width="800" height="800"></canvas>
       <div id="score"></div>
-      <p id="made">
-        made by <a href="https://koenvangilst.nl">Koen van Gilst</a> | source on
-        <a href="https://github.com/vnglst/pong-wars">github</a>
+      <input id="speed" type="number" value="10" />
+      <p id="made"> source on
+        <a href="https://github.com/gray0072/pong-wars">github</a>
       </p>
     </div>
   </body>
@@ -94,6 +98,7 @@
     const canvas = document.getElementById("pongCanvas");
     const ctx = canvas.getContext("2d");
     const scoreElement = document.getElementById("score");
+    const speedElement = document.getElementById("speed");
 
     const DAY_COLOR = colorPalette.MysticMint;
     const DAY_BALL_COLOR = colorPalette.NocturnalExpedition;
@@ -117,13 +122,13 @@
 
     let x1 = canvas.width / 4;
     let y1 = canvas.height / 2;
-    let dx1 = 12.5;
-    let dy1 = -12.5;
+    let dx1 = 5;
+    let dy1 = -5;
 
     let x2 = (canvas.width / 4) * 3;
     let y2 = canvas.height / 2;
-    let dx2 = -12.5;
-    let dy2 = 12.5;
+    let dx2 = -5;
+    let dy2 = 5;
 
     let iteration = 0;
 
@@ -241,7 +246,7 @@
       drawBall(x1, y1, DAY_BALL_COLOR);
       drawBall(x2, y2, NIGHT_BALL_COLOR);
 
-      let speed = 100;
+      let speed = Number(speedElement.value);
       [...Array(speed)].map(() => calcNextPosition())
 
       updateScoreElement();
