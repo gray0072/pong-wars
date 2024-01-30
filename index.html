@@ -120,12 +120,14 @@
       }
     }
 
-    let x1 = canvas.width / 4;
+    // Should be on left side (between 5% and 45%)
+    let x1 = canvas.width * (Math.random() * 0.4 + 0.05);
     let y1 = canvas.height / 2;
     let dx1 = 5;
     let dy1 = -5;
 
-    let x2 = (canvas.width / 4) * 3;
+    // Should be on right side (between 55% and 95%)
+    let x2 = canvas.width * (Math.random() * 0.4 + 0.55);
     let y2 = canvas.height / 2;
     let dx2 = -5;
     let dy2 = 5;
